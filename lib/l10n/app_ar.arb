@@ -1,0 +1,11 @@
+{
+    "helloWorld": "مرحبا بالعالم",
+    "whatsNew" : "ما هو الجديد",
+    "versionHistory" : "تاريخ النسخة",
+    "preview" : "معاينة",
+    "getButton" : "احصل",
+    "settingsAppbarTitle": "إعدادات",
+    "changeLanguageButton": "تغيير اللغة",
+    "showMore" : "أظهر المزيد",
+    "showLess" : "تظهر أقل"
+}
