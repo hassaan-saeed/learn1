@@ -1,21 +1,15 @@
-import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:learn1/assets/assets.dart';
 import 'package:learn1/extensions/context_extension.dart';
 
-class VersionHistoryScreen extends StatefulWidget {
+class VersionHistoryScreen extends StatelessWidget {
 
   static String routeName = "/version-history";
 
-  const VersionHistoryScreen({Key? key}) : super(key: key);
+  VersionHistoryScreen({Key? key}) : super(key: key);
 
-  @override
-  State<VersionHistoryScreen> createState() => _VersionHistoryScreenState();
-}
-
-class _VersionHistoryScreenState extends State<VersionHistoryScreen> {
-  List<History> history = [
+  final List<History> history = [
     History("9.1.283", "1w ago",
         "When you're in a conversation, speed and stability matter. The LinkedIn app is now more reliable than ever. This update contains bug fixes."),
     History("9.1.282", "2w ago",

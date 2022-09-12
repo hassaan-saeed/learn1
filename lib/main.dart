@@ -63,20 +63,24 @@ class _MyAppState extends State<MyApp> {
         path: AppDetailsScreen.getRouteName(),
         builder: (BuildContext context, GoRouterState state) {
           final appId = state.params['appId']!;
-          return AppDetailsScreen(appId: appId,);
+          return AppDetailsScreen(
+            appId: appId,
+          );
         },
       ),
       GoRoute(
         path: SettingsScreen.getRouteName(),
         builder: (BuildContext context, GoRouterState state) {
           final appName = state.params['appname']!;
-          return SettingsScreen(appName: appName,);
+          return SettingsScreen(
+            appName: appName,
+          );
         },
       ),
       GoRoute(
         path: VersionHistoryScreen.routeName,
         builder: (BuildContext context, GoRouterState state) {
-          return const VersionHistoryScreen();
+          return VersionHistoryScreen();
         },
       ),
       GoRoute(
@@ -91,7 +95,7 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MultiRepositoryProvider(
-      providers: [RepositoryProvider(create: (context)=> AppApi())],
+      providers: [RepositoryProvider(create: (context) => AppApi())],
       child: MaterialApp.router(
         routeInformationProvider: _router.routeInformationProvider,
         routeInformationParser: _router.routeInformationParser,

@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:learn1/assets/assets.dart';
-import 'package:learn1/data/data_source/remote/api.dart';
 import 'package:learn1/model/app.dart';
 import 'package:learn1/screens/app_detail_screen/app_detail_screen.dart';
 import 'package:learn1/screens/apps_screen/bloc/apps_bloc.dart';
+
+import '../loading_screens/apps_loading_screen.dart';
 
 class AppsScreen extends StatefulWidget {
   static String routeName = "/";
@@ -31,7 +32,7 @@ class _AppsScreenState extends State<AppsScreen> {
         body: BlocBuilder<AppsBloc, AppsState>(
           builder: (context, state) {
             if (state is AppsLoadingState) {
-              return Center(child: CircularProgressIndicator());
+              return AppsLoadingWidget();
             } else if (state is AppsLoadedState) {
               return Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20.0),
