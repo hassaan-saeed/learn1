@@ -9,11 +9,15 @@ class AppApi {
   String get appInfo => '/appinfo';
   String get apps => '/apps';
 
-  Future<AppInfoM> getAppInfo() async {
+  Future<AppInfoM> getAppInfo(String? appId) async {
+    String endpoint = appInfo;
+    if(appId!=null){
+      endpoint = "$appInfo/$appId";
+    }
     AppInfoM data;
     // try {
       ClientHelper dio = ClientHelper();
-      var response = await dio.dioInstance.get(appInfo);
+      var response = await dio.dioInstance.get(endpoint);
       data = AppInfoM.fromJson(jsonDecode(response.toString()));
       print(response);
       // print(data['title']);

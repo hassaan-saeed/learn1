@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:learn1/assets/assets.dart';
 import 'package:learn1/data/data_source/remote/api.dart';
 import 'package:learn1/model/app.dart';
 import 'package:learn1/screens/app_detail_screen/app_detail_screen.dart';
+import 'package:learn1/screens/apps_screen/bloc/apps_bloc.dart';
 
 class AppsScreen extends StatefulWidget {
   static String routeName = "/";
@@ -17,36 +19,41 @@ class AppsScreen extends StatefulWidget {
 class _AppsScreenState extends State<AppsScreen> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text("Apps"),
-        backgroundColor: AppAssets.colors.blue,
-      ),
-      backgroundColor: AppAssets.colors.background,
-      body: FutureBuilder(
-        future: AppApi().getApps(),
-        builder: (BuildContext context, AsyncSnapshot<Apps> snapshot) {
-          if (!snapshot.hasData || snapshot.data == null) {
-            return const Center(child: CircularProgressIndicator());
-          } else {
-            return Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20.0),
-              child: ListView.separated(
-                  padding: const EdgeInsets.symmetric(vertical: 20),
-                  itemCount: snapshot.data!.apps.length,
-                  separatorBuilder: (BuildContext context, int index) =>
-                      Divider(
-                          height: 20,
-                          color: AppAssets.colors.grey,
-                          thickness: 1),
-                  itemBuilder: (BuildContext context, int index) {
-                    return AppTile(
-                      app: snapshot.data!.apps[index],
-                    );
-                  }),
-            );
-          }
-        },
+    return BlocProvider(
+      create: (context) =>
+          AppsBloc(RepositoryProvider.of(context))..add(LoadApiEvent()),
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text("Apps"),
+          backgroundColor: AppAssets.colors.blue,
+        ),
+        backgroundColor: AppAssets.colors.background,
+        body: BlocBuilder<AppsBloc, AppsState>(
+          builder: (context, state) {
+            if (state is AppsLoadingState) {
+              return Center(child: CircularProgressIndicator());
+            } else if (state is AppsLoadedState) {
+              return Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                child: ListView.separated(
+                    padding: const EdgeInsets.symmetric(vertical: 20),
+                    itemCount: state.apps.apps.length,
+                    separatorBuilder: (BuildContext context, int index) =>
+                        Divider(
+                            height: 20,
+                            color: AppAssets.colors.grey,
+                            thickness: 1),
+                    itemBuilder: (BuildContext context, int index) {
+                      return AppTile(
+                        app: state.apps.apps[index],
+                      );
+                    }),
+              );
+            } else {
+              return ErrorWidget("There is some error");
+            }
+          },
+        ),
       ),
     );
   }
@@ -64,7 +71,7 @@ class AppTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () async {
-        context.push(AppDetailsScreen.routeName);
+        context.push(AppDetailsScreen.getRouteName(appId: app.id));
       },
       child: Row(
         children: [

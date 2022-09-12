@@ -21,6 +21,8 @@ class SettingsScreen extends StatefulWidget {
 
 class _SettingsScreenState extends State<SettingsScreen> {
 
+  bool isAvailable = true;
+
   _changeLang() {
     if(Localizations.localeOf(context).languageCode == 'en'){
       setState(() {
@@ -53,6 +55,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
+              // if(isAvailable)...[Text("true"),Text("true"),Text("true")]else...[Text("false"),Text("false"),Text("false")],
+              // if(isAvailable)Text("true"),
+              // isAvailable?Text("true"):Text("false"),
               Text(
                 widget.appName,
                 style: AppAssets.fontStyles.languageButton,

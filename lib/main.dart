@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:learn1/screens/app_detail_screen/app_detail_screen.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -7,6 +8,8 @@ import 'package:learn1/screens/settings_screen/settings_screen.dart';
 import 'package:learn1/screens/version_history_screen/version_history_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:go_router/go_router.dart';
+
+import 'data/data_source/remote/api.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -57,9 +60,10 @@ class _MyAppState extends State<MyApp> {
   final GoRouter _router = GoRouter(
     routes: <GoRoute>[
       GoRoute(
-        path: AppDetailsScreen.routeName,
+        path: AppDetailsScreen.getRouteName(),
         builder: (BuildContext context, GoRouterState state) {
-          return const AppDetailsScreen();
+          final appId = state.params['appId']!;
+          return AppDetailsScreen(appId: appId,);
         },
       ),
       GoRoute(
@@ -86,28 +90,31 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp.router(
-      routeInformationProvider: _router.routeInformationProvider,
-      routeInformationParser: _router.routeInformationParser,
-      routerDelegate: _router.routerDelegate,
-      title: 'Flutter Demo',
-      debugShowCheckedModeBanner: false,
-      locale: _locale,
-      localizationsDelegates: const [
-        AppLocalizations.delegate,
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-      ],
-      supportedLocales: const [
-        Locale('en', ''), // English, no country code
-        Locale('ar', '')
-      ],
+    return MultiRepositoryProvider(
+      providers: [RepositoryProvider(create: (context)=> AppApi())],
+      child: MaterialApp.router(
+        routeInformationProvider: _router.routeInformationProvider,
+        routeInformationParser: _router.routeInformationParser,
+        routerDelegate: _router.routerDelegate,
+        title: 'Flutter Demo',
+        debugShowCheckedModeBanner: false,
+        locale: _locale,
+        localizationsDelegates: const [
+          AppLocalizations.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
+        supportedLocales: const [
+          Locale('en', ''), // English, no country code
+          Locale('ar', '')
+        ],
 
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+        ),
+        // home: const AppDetailsScreen(),
       ),
-      // home: const AppDetailsScreen(),
     );
   }
 }

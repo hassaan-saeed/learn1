@@ -17,10 +17,11 @@ class ClientHelper{
     // or new Dio with a BaseOptions instance.
     var options = BaseOptions(
       baseUrl: 'https://41c08c87-beaf-4869-9dd7-5faf68036270.mock.pstmn.io',
-      connectTimeout: 5000,
-      receiveTimeout: 3000,
+      connectTimeout: 15000,
+      receiveTimeout: 30000,
     );
     final dio = Dio(options);
+    dio.interceptors.add(LogInterceptor(responseBody: true)); //开启请求日志
     return dio;
   }
 

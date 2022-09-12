@@ -13,18 +13,21 @@ class Apps {
 
 class App {
 
+  final String id;
   final String title;
   final String subtitle;
   final String logoImageUrl;
 
-  App(this.title, this.subtitle, this.logoImageUrl);
+  App(this.title, this.subtitle, this.logoImageUrl, this.id);
 
   App.fromJson(Map<String, dynamic> json)
-      : title = json['title'],
+      : id = json['id'],
+        title = json['title'],
         subtitle = json['subtitle'],
         logoImageUrl = json['logoImageUrl'];
 
   Map<String, dynamic> toJson() => {
+    'id': id,
     'title': title,
     'subtitle': subtitle,
     'logoImageUrl': logoImageUrl

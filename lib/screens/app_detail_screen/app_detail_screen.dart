@@ -13,9 +13,13 @@ import 'package:learn1/screens/settings_screen/settings_screen.dart';
 
 
 class AppDetailsScreen extends StatefulWidget {
-  static String routeName = "/app-details";
+  static String routeName = "/app-details/:appId";
 
-  const AppDetailsScreen({Key? key}) : super(key: key);
+  static String getRouteName({String appId=":appId"})=> "/app-details/$appId";
+
+  const AppDetailsScreen({Key? key, this.appId}) : super(key: key);
+
+  final String? appId;
 
   @override
   State<AppDetailsScreen> createState() => _AppDetailsScreenState();
@@ -49,7 +53,7 @@ class _AppDetailsScreenState extends State<AppDetailsScreen> {
       ),
       backgroundColor: AppAssets.colors.background,
       body:FutureBuilder(
-        future: AppApi().getAppInfo(),
+        future: AppApi().getAppInfo(widget.appId),
         builder: (BuildContext context, AsyncSnapshot<AppInfoM> snapshot) {
           if (!snapshot.hasData || snapshot.data == null) {
             return const Center(child: CircularProgressIndicator());
